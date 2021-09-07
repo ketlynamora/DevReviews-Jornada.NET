@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net5.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/bad3feb1-75a3-4fdf-adef-be953340c9f9/resourceGroups/jornada-dotnet/providers/Microsoft.Web/sites/devreviewsketlyn"
+}

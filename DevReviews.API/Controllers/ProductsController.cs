@@ -2,7 +2,9 @@ using AutoMapper;
 using DevReviews.API.Entities;
 using DevReviews.API.Models;
 using DevReviews.API.Persistence.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -44,16 +46,40 @@ namespace DevReviews.API.Controllers
             return Ok(productDetails);
         }
 
+        /// <summary>
+        /// Cadastro de Produto
+        /// </summary>
+        /// <remarks>Requisição:
+        /// {
+        ///     "title": "Um chinelo top",
+        ///     "description": "Um chinelo de marca",
+        ///     "price": 100
+        /// }
+        /// </remarks>
+        /// <param name="model">Objeto com dados de cadastro de Producto</param>
+        /// <returns>Objeto recém-criado</returns>
+        /// <response code="201">Sucesso</response>
+        /// <response code="400">Dados inválidos</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post(AddProductInputModel model)
         {
             var product = new Product(model.Title, model.Description, model.Price);
+
+            Log.Information("Método POST chamado!");
 
             await _productRepository.AddAsync(product);
 
             return CreatedAtAction(nameof(GetById), new { id = product.Id }, model);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, UpdateProductInputModel model)
         {
